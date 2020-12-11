@@ -1,8 +1,36 @@
-﻿@{
+﻿@model CheckBoxPractice.Controllers.TestViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form method="post"
+      asp-action="PostIndex">
+
+    @for (var index = 0; index < Model.TestItemDtos.Length; index++)
+    {
+        // Id 有值，代表有勾選
+        var isChecked = Model.TestItemDtos[index].Id == null
+                            ? string.Empty
+                            : "checked";
+
+        <p>
+            <input type="hidden"
+                   asp-for="@(Model.TestItemDtos[index].Id)" />
+
+            <input type="checkbox"
+                   id="TestItemDtos[@(index)].ForeignKeyId"
+                   name="TestItemDtos[@(index)].ForeignKeyId"
+                   value="@(Model.TestItemDtos[index].ForeignKeyId)"
+                   @(isChecked) />
+            <label for="TestItemDtos[@(index)].ForeignKeyId">
+                @(Model.TestItemDtos[index].Name)
+            </label>
+
+            <input type="hidden"
+                   asp-for="@(Model.TestItemDtos[index].Name)" />
+        </p>
+    }
+
+    <input type="submit"
+           value="Sumbit" />
+</form>
